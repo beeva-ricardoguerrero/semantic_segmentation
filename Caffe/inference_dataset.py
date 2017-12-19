@@ -1,3 +1,13 @@
+#If you are using the Deep Learning AMI from AWS, you may want to uncomment this:
+
+"""
+import sys
+path = [elem for elem in sys.path if elem.find("caffe") == -1]
+path_bkp = sys.path
+path.append('/home/ubuntu/src/caffe_cpu/python')
+sys.path = path
+"""
+
 import numpy as np
 import caffe
 
@@ -37,7 +47,8 @@ print("Dataset total images: %d. \nLimiting the analysis to the first 100." % (t
 list_image_names = list_image_names[:100]
 total_images = len(list_image_names)
 
-raw_input("Press Enter to continue...")
+# Commented to avoid timing issues
+#raw_input("Press Enter to continue...")
 
 
 # Start the computation
@@ -55,9 +66,13 @@ for num, image_name in enumerate(list_image_names):
 	output_path = experiment_path + '/' + image_name + extension_result
 	np.save(output_path, output_tensor)
 
-	if True == True:
-	#if num % 10: # TODO
+	if num % 10 == 0:
 		# Show inference time
 		print("Sample %d of %d: inference took %f seconds" % (num+1, total_images, elapsed))
+
+print("Total: %f", np.sum(list_elapsed_time))
+print("Mean: %f", np.mean(list_elapsed_time))
+print("Variance: %f", np.var(list_elapsed_time))
+print("Median: %f", np.median(list_elapsed_time))
 
 print("Yatta!") # Hiro Nakamura
