@@ -70,9 +70,9 @@ for num, image_name in enumerate(list_image_names):
 		# Show inference time
 		print("Sample %d of %d: inference took %f seconds" % (num+1, total_images, elapsed))
 
-print("Total: %f", np.sum(list_elapsed_time))
-print("Mean: %f", np.mean(list_elapsed_time))
-print("Variance: %f", np.var(list_elapsed_time))
-print("Median: %f", np.median(list_elapsed_time))
+print("Total: %f" % np.sum(list_elapsed_time))
+print("Mean: %f" % np.mean(list_elapsed_time))
+print("Variance: %f" % np.var(list_elapsed_time))
+print("Median: %f" % np.median(list_elapsed_time))
 
 print("Yatta!") # Hiro Nakamura
