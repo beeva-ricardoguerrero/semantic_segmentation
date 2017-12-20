@@ -19,4 +19,4 @@ git clone https://github.com/shelhamer/fcn.berkeleyvision.org.git $WORKING_DIR/E
 # Download caffemodel
 aws s3 cp $BUCKET_URL/$CAFFEMODEL $CAFFEMODEL_DIR/
 
-mkdir WORKING_DIR=~/semantic_segmentation/Caffe/Results
+mkdir -p $WORKING_DIR/Caffe/Results

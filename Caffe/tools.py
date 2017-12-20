@@ -33,12 +33,12 @@ def inference(net, tensor_input):
 	return np.squeeze(res['score']), elapsed # res['score'] contains the output tensor
 
 
-def load_gt(gt_path, network_size):
+def load_gt(gt_path):
 
 	# load ground truth images with it's specific format
 	# VERY IMPORTANT TO LOAD GT THIS WAY. OTHERWISE THE VALUES WON'T BE CORRECT
 
-	im =scipy.misc.imread(image_path, mode='P') # Split indexes from palette
+	im = scipy.misc.imread(gt_path, mode='P') # Split indexes from palette
 	
 	return im
 
@@ -51,6 +51,8 @@ def adapt_prediction(predicted, gt_shape):
 
 		# Adapt the size to the ground truth
 		predicted = scipy.misc.imresize(predicted, gt_shape, interp='nearest')
+
+	return predicted
 
 
 # The following code is based on
@@ -66,6 +68,8 @@ def single_pixelAccuracy(predicted, ground_truth):
 	pixel_correct = np.sum( (predicted == ground_truth) * (predicted > 0) )
 	pixel_accuracy = pixel_correct / float(pixel_labeled)
 
+	return pixel_accuracy, pixel_correct, pixel_labeled
+
 
 def dataset_pixelAccuracy(ls_predicted, ls_ground_truth):
 	
@@ -75,14 +79,14 @@ def dataset_pixelAccuracy(ls_predicted, ls_ground_truth):
 	pixel_correct = [None]*len(ls_predicted)
 	pixel_labeled = [None]*len(ls_predicted)
 
-	for i in range(len(predicted)):
+	for i in range(len(ls_predicted)):
 
-		pred = np.load(predicted[i])
-		gt = load_gt(ground_truth[i])
+		pred = np.load(ls_predicted[i])
+		gt = load_gt(ls_ground_truth[i])
 		pred = adapt_prediction(pred, gt.shape)
 
 		pixel_accuracy[i], pixel_correct[i], pixel_labeled[i] = \
-		single_pixelAccuracy(pred, ground_truth[i])
+		single_pixelAccuracy(pred, gt)
 
 	mean_pixel_accuracy = sum(pixel_correct)/float(eps + sum(pixel_labeled));
 
