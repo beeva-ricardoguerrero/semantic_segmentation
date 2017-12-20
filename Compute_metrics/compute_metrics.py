@@ -27,8 +27,7 @@ total_images = len(list_image_names)
 print("Dataset total images: %d. \nLimiting the analysis to the first 100." % (total_images))
 
 # Limit the analysis to the first 100 images of the dataset
-#list_image_names = list_image_names[:100]
-list_image_names = list_image_names[:10] # TODO
+list_image_names = list_image_names[:100]
 total_images = len(list_image_names)
 
 
