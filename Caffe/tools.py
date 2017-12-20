@@ -63,11 +63,13 @@ def adapt_prediction(predicted, gt_shape):
 
 def single_pixelAccuracy(predicted, ground_truth):
 
+	# Code modified from PSPNet to adapt to Pascal VOC's label 255 (ignore label)
+
 	# Just to make sure
 	assert predicted.shape == ground_truth.shape
 
-	pixel_labeled = np.sum(predicted>0)
-	pixel_correct = np.sum( (predicted == ground_truth) * (predicted > 0))
+	pixel_labeled = np.sum( (predicted>0) * (ground_truth != 255) )
+	pixel_correct = np.sum( (predicted == ground_truth) * (predicted > 0) * (ground_truth != 255) )
 	pixel_accuracy = pixel_correct / float(pixel_labeled)
 
 	return pixel_accuracy, pixel_correct, pixel_labeled
