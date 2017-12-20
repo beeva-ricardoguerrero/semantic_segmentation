@@ -45,12 +45,15 @@ def load_gt(gt_path):
 def adapt_prediction(predicted, gt_shape):
 
 	if len(predicted.shape) == 3: # We need to collapse probabilities
-		predicted = np.argmax(predicted, 2)
+		predicted = np.argmax(predicted, 0)
+
 
 	if not np.all(predicted.shape == gt_shape):
 
 		# Adapt the size to the ground truth
-		predicted = scipy.misc.imresize(predicted, gt_shape, interp='nearest')
+
+        # scipy.misc.imresize completely changes the values if it's not properly used. It's very dangerous!!
+		predicted = scipy.misc.imresize(predicted, gt_shape, interp='nearest', mode='F').astype(np.uint8)
 
 	return predicted
 
@@ -58,14 +61,13 @@ def adapt_prediction(predicted, gt_shape):
 # The following code is based on
 # https://github.com/hszhao/PSPNet/blob/master/evaluation/evaluationCode/pixelAccuracy.m
 
-# TODO check in the case of value 255 in gt
 def single_pixelAccuracy(predicted, ground_truth):
 
 	# Just to make sure
 	assert predicted.shape == ground_truth.shape
 
 	pixel_labeled = np.sum(predicted>0)
-	pixel_correct = np.sum( (predicted == ground_truth) * (predicted > 0) )
+	pixel_correct = np.sum( (predicted == ground_truth) * (predicted > 0))
 	pixel_accuracy = pixel_correct / float(pixel_labeled)
 
 	return pixel_accuracy, pixel_correct, pixel_labeled
