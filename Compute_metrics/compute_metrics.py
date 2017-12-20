@@ -7,7 +7,7 @@ cwd = '/workspace/semantic_segmentation'
 dataset_path = cwd + '/Dataset/Pascal_voc_2012/VOCdevkit (2)/VOC2012'
 dataset_names_path = dataset_path + '/ImageSets/Segmentation/val.txt'
 dataset_ground_truth_path = dataset_path + '/SegmentationClass'
-predicted_path = cwd + "/Caffe/Output"
+predicted_path = cwd + "/Caffe/Results"
 ext_images = '.jpg'
 ext_gt = '.png'
 ext_result = '.npy'
@@ -38,7 +38,7 @@ total_images = len(list_image_names)
 list_prediction_path = []
 
 for num, image_name in enumerate(list_image_names):
-	prediction_path = predicted_path + '/' + image_name + ext_images + ext_result
+	prediction_path = predicted_path + '/' + image_name + ext_result
 	list_prediction_path.append(prediction_path)
 
 
@@ -59,6 +59,6 @@ assert len(list_prediction_path) == len(list_ground_truth_path), \
 
 # Start the computation
 
-mean_pixel_accuracy = dataset_pixelAccuracy(ls_predicted, ls_ground_truth)
+mean_pixel_accuracy = dataset_pixelAccuracy(list_prediction_path, list_ground_truth_path)
 
-print("Report: the mean pixel accuracy for the whole dataset (%d images) is %.3lf" % (total_images, mean_pixel_accuracy))
+print("Report: the mean pixel accuracy for the whole dataset (%d images) is %.3lf \%" % (total_images, mean_pixel_accuracy*100))
