@@ -1,6 +1,5 @@
 import scipy.misc
 import numpy as np
-import caffe
 import time
 
 
